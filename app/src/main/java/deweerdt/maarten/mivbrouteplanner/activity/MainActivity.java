@@ -33,6 +33,7 @@ import deweerdt.maarten.mivbrouteplanner.util.StopsParser;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     {
         try {
             StopsParser.getInstance()
-                    .parseCalendar(new FileInputStream(getCacheDir()+File.pathSeparator+"stops.txt"));
+                    .parseStops(new FileInputStream(getCacheDir()+File.pathSeparator+"stops.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

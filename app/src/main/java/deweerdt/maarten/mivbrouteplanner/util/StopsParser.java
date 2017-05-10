@@ -25,15 +25,15 @@ public class StopsParser {
     }
 
     //needed stuff
-    private ArrayList<Stops> mCalendarList = new ArrayList<Stops> ();
+    private ArrayList<Stops> mStopsList = new ArrayList<Stops> ();
     private final String TAG = "GtfsDemo";
 
-    public void parseCalendar(FileInputStream rid) {
+    public void parseStops(FileInputStream rid) {
         BufferedReader rawReader = new BufferedReader(new InputStreamReader(rid));
         String line = "";
         try {
             while((line = rawReader.readLine()) != null) {
-                mCalendarList.add(new Stops(line));
+                mStopsList.add(new Stops(line));
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -41,13 +41,13 @@ public class StopsParser {
         }
 
         //first row in file are columns
-        mCalendarList.remove(0);
+        mStopsList.remove(0);
 
-        printCalendar();
+        printStops();
     }
 
-    private void printCalendar() {
-        for (Stops stops : mCalendarList)
+    private void printStops() {
+        for (Stops stops : mStopsList)
             Log.i(TAG, "stop_id " + stops.stop_id + "\n"
                     + "stop_code " + stops.stop_code + "\n"
                     + "stop_name " + stops.stop_name + "\n"
