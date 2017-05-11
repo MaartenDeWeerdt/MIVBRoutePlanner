@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 public class StopsAdapter extends BaseAdapter implements Filterable{
 
-    private SharedPreferences sharedPreferences;
-
     private class Viewholder
     {
         public TextView tvRowStops;
