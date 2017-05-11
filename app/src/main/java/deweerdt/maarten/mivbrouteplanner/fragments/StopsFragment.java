@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,7 +26,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import deweerdt.maarten.mivbrouteplanner.R;
-import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 import deweerdt.maarten.mivbrouteplanner.requests.RawDataRequest;
 import deweerdt.maarten.mivbrouteplanner.util.StopsAdapter;
 import deweerdt.maarten.mivbrouteplanner.util.StopsParser;
@@ -65,12 +63,14 @@ public class StopsFragment extends Fragment {
         lvStops.setAdapter(mAdapter);
 
 
+        /*
         lvStops.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, StopsFragment.newInstance((Stop) mAdapter.getItem(position))).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, StopsFragment.newInstance()).commit();
             }
         });
+        */
 
         return rootView;
     }

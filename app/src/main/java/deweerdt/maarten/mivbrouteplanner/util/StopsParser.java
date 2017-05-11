@@ -28,7 +28,7 @@ public class StopsParser {
     private ArrayList<Stop> mStopsList = new ArrayList<Stop> ();
     private final String TAG = "GtfsDemo";
 
-    public void parseStops(FileInputStream rid) {
+    public ArrayList<Stop> parseStops(FileInputStream rid) {
         BufferedReader rawReader = new BufferedReader(new InputStreamReader(rid));
         String line = "";
         try {
@@ -44,6 +44,7 @@ public class StopsParser {
         mStopsList.remove(0);
 
         printStops();
+        return mStopsList;
     }
 
     private void printStops() {
