@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import deweerdt.maarten.mivbrouteplanner.entities.Stops;
+import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 
 /**
  * Created by Maarten De Weerdt on 10/05/2017.
@@ -25,7 +25,7 @@ public class StopsParser {
     }
 
     //needed stuff
-    private ArrayList<Stops> mStopsList = new ArrayList<Stops> ();
+    private ArrayList<Stop> mStopsList = new ArrayList<Stop> ();
     private final String TAG = "GtfsDemo";
 
     public void parseStops(FileInputStream rid) {
@@ -33,7 +33,7 @@ public class StopsParser {
         String line = "";
         try {
             while((line = rawReader.readLine()) != null) {
-                mStopsList.add(new Stops(line));
+                mStopsList.add(new Stop(line));
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -47,15 +47,15 @@ public class StopsParser {
     }
 
     private void printStops() {
-        for (Stops stops : mStopsList)
-            Log.i(TAG, "stop_id " + stops.stop_id + "\n"
-                    + "stop_code " + stops.stop_code + "\n"
-                    + "stop_name " + stops.stop_name + "\n"
-                    + "stop_desc " + stops.stop_desc + "\n"
-                    + "stop_lat " + stops.stop_lat + "\n"
-                    + "stop_lon " + stops.stop_lon + "\n"
-                    + "zone_id " + stops.zone_id + "\n"
-                    + "stop_url " + stops.stop_url + "\n"
-                    + "location_type " + stops.location_type);
+        for (Stop stop : mStopsList)
+            Log.i(TAG, "stop_id " + stop.stop_id + "\n"
+                    + "stop_code " + stop.stop_code + "\n"
+                    + "stop_name " + stop.stop_name + "\n"
+                    + "stop_desc " + stop.stop_desc + "\n"
+                    + "stop_lat " + stop.stop_lat + "\n"
+                    + "stop_lon " + stop.stop_lon + "\n"
+                    + "zone_id " + stop.zone_id + "\n"
+                    + "stop_url " + stop.stop_url + "\n"
+                    + "location_type " + stop.location_type);
     }
 }
