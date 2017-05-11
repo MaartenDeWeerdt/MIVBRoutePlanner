@@ -12,5 +12,4 @@
         android:text="TextView"
         android:textAppearance="@android:style/TextAppearance.Large"
         android:textStyle="bold" />
-
 </LinearLayout>

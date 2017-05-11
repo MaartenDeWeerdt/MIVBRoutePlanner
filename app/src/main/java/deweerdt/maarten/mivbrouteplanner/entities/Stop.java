@@ -21,4 +21,43 @@ public class Stop {
         this.stop_url = temp[7];
         this.location_type = temp[8];
     }
+
+    public Stop() {
+    }
+
+    public String getStop_id() {
+        return stop_id;
+    }
+
+    public String getStop_code() {
+        return stop_code;
+    }
+
+    public String getStop_name() {
+        return stop_name;
+    }
+
+    public String getStop_desc() {
+        return stop_desc;
+    }
+
+    public String getStop_lat() {
+        return stop_lat;
+    }
+
+    public String getStop_lon() {
+        return stop_lon;
+    }
+
+    public String getZone_id() {
+        return zone_id;
+    }
+
+    public String getStop_url() {
+        return stop_url;
+    }
+
+    public String getLocation_type() {
+        return location_type;
+    }
 }
