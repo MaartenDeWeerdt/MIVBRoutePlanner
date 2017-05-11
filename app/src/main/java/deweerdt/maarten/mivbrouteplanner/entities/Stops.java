@@ -21,4 +21,6 @@ public class Stops {
         this.stop_url = temp[7];
         this.location_type = temp[8];
     }
+
+
 }
