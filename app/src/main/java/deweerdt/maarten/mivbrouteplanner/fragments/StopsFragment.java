@@ -9,9 +9,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import deweerdt.maarten.mivbrouteplanner.R;
 import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 import deweerdt.maarten.mivbrouteplanner.util.StopsAdapter;
+import deweerdt.maarten.mivbrouteplanner.util.StopsParser;
 
 
 public class StopsFragment extends Fragment {
@@ -21,7 +25,7 @@ public class StopsFragment extends Fragment {
     private ListView lvStops;
 
     public StopsFragment() {
-        // Required empty public constructor
+
     }
 
     public static StopsFragment newInstance() {
@@ -38,7 +42,7 @@ public class StopsFragment extends Fragment {
 
         lvStops = (ListView) rootView.findViewById(R.id.lv_stops);
 
-        //mAdapter = new StopsAdapter(getActivity(), StopsParser.getInstance().parseStops(new FileInputStream(getCacheDir()+ File.pathSeparator+"stops.txt")));
+        mAdapter = new StopsAdapter(getActivity(), StopsParser.getInstance().parseStops(new FileInputStream(getCacheDir()+ File.pathSeparator+"stops.txt")));
         lvStops.setAdapter(mAdapter);
 
 
@@ -56,6 +60,12 @@ public class StopsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
     }
 }
