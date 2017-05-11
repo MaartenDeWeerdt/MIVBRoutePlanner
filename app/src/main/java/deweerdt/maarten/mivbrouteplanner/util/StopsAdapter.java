@@ -2,6 +2,7 @@ package deweerdt.maarten.mivbrouteplanner.util;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import deweerdt.maarten.mivbrouteplanner.R;
 import deweerdt.maarten.mivbrouteplanner.entities.Stop;
+import deweerdt.maarten.mivbrouteplanner.fragments.StopsFragment;
 
 /**
  * Created by Maarten De Weerdt on 10/05/2017.
@@ -31,7 +34,7 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
 
     private Activity context;
 
-    private StopsAdapter (Activity context, ArrayList<Stop> stops){
+    public StopsAdapter (Activity context, ArrayList<Stop> stops){
         this.context = context;
         this.stops = stops;
     }
@@ -60,7 +63,7 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
 
             holder = new Viewholder();
 
-            holder.tvRowStops = (TextView) convertView.findViewById(R.id.stops_row);
+            holder.tvRowStops = (TextView) convertView.findViewById(R.id.tv_row_stop);
 
 
             convertView.setTag(holder);
