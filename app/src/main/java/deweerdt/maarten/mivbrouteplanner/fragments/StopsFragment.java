@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,8 +35,8 @@ import deweerdt.maarten.mivbrouteplanner.util.StopsParser;
 public class StopsFragment extends Fragment {
 
     private StopsAdapter mAdapter;
-
     private ListView lvStops;
+    private ProgressBar pbMain;
 
     public StopsFragment() {
 
@@ -78,6 +79,8 @@ public class StopsFragment extends Fragment {
 
         Toast.makeText(getActivity(), "start download", Toast.LENGTH_SHORT).show();
         downloadZIP();
+
+        pbMain = (ProgressBar) getActivity().findViewById(R.id.pb_main);
 
     }
 
@@ -177,6 +180,9 @@ public class StopsFragment extends Fragment {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        pbMain.setEnabled(false);
+        pbMain.setVisibility(View.INVISIBLE);
         lvStops.setAdapter(mAdapter);
     }
 }
