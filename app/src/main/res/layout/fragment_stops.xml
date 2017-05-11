@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.ehb.hellonavigationdrawer.fragments.MainFragment">
+    tools:context="deweerdt.maarten.mivbrouteplanner.fragments.StopsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
