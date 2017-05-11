@@ -1,5 +1,6 @@
 package deweerdt.maarten.mivbrouteplanner.util;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
+import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 
 /**
  * Created by Maarten De Weerdt on 10/05/2017.
@@ -21,24 +27,55 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
         public TextView tvRowStops;
     }
 
+    private Viewholder holder;
+
+    private ArrayList <Stop> stops;
+
+    private Activity context;
+
+    private StopsAdapter (Activity context, ArrayList<Stop> stops){
+        this.context = context;
+        this.stops = stops;
+    }
+
     @Override
     public int getCount() {
-        return 0;
+        return stops.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return stops.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return Integer.parseInt(stops.get(position).getStop_id());
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        if(convertView == null ){
+
+            convertView = context.getLayoutInflater().inflate(R.layout.stops_row, parent, false);
+
+            holder = new Viewholder();
+
+            holder.tvRowStops = (TextView) convertView.findViewById(R.id.stops_row);
+
+
+            convertView.setTag(holder);
+        }
+        else{
+            holder = (Viewholder) convertView.getTag();
+        }
+
+        Stop stop = stops.get(position);
+
+        holder.tvRowStops.setText(stop.getStop_name());
+
+        return convertView;
     }
 
     @Override
