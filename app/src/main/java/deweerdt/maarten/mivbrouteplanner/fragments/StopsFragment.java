@@ -55,12 +55,7 @@ public class StopsFragment extends Fragment {
 
         lvStops = (ListView) rootView.findViewById(R.id.lv_stops);
 
-        try {
-            mAdapter = new StopsAdapter(getActivity(), StopsParser.getInstance().parseStops(new FileInputStream(getActivity().getCacheDir()+ File.pathSeparator + "stops.txt")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        lvStops.setAdapter(mAdapter);
+
 
 
         /*
@@ -80,7 +75,6 @@ public class StopsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
         Toast.makeText(getActivity(), "start download", Toast.LENGTH_SHORT).show();
         downloadZIP();
@@ -177,5 +171,12 @@ public class StopsFragment extends Fragment {
         }
 
         Toast.makeText(getActivity().getApplicationContext(), "Finished loading data", Toast.LENGTH_LONG).show();
+
+        try {
+            mAdapter = new StopsAdapter(getActivity(), StopsParser.getInstance().parseStops(new FileInputStream(getActivity().getCacheDir()+ File.pathSeparator + "stops.txt")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        lvStops.setAdapter(mAdapter);
     }
 }
