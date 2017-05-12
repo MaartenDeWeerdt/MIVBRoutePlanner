@@ -43,7 +43,7 @@ public class StopsParser {
         //first row in file are columns
         mStopsList.remove(0);
 
-        printStops();
+        //printStops();
         return mStopsList;
     }
 

@@ -55,7 +55,7 @@ public class StopsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_stops, container, false);
 
         lvStops = (ListView) rootView.findViewById(R.id.lv_stops);
-
+pbMain = (ProgressBar) rootView.findViewById(R.id.pb_main);
 
 
 
@@ -152,7 +152,7 @@ public class StopsFragment extends Fragment {
         RequestQueue mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         //params voor header
         HashMap<String, String> Headerparams = new HashMap<>();
-        Headerparams.put("Authorization:", "Bearer f21253836326beabd212118261992e6f");
+        Headerparams.put("Authorization:", "Bearer 99a1cb8b757e1d06ccee096252fde7b9");
 
         //headers kan je niet setten, fast and dirty de klasse overschrijven
         RawDataRequest getRequest = new RawDataRequest(Request.Method.GET,
