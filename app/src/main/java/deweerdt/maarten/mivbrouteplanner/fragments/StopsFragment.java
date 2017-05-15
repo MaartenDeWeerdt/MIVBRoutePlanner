@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -48,6 +49,13 @@ public class StopsFragment extends Fragment {
         return fragment;
     }
 
+    ListView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new MapsFragment()).commit();
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,18 +63,9 @@ public class StopsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_stops, container, false);
 
         lvStops = (ListView) rootView.findViewById(R.id.lv_stops);
-pbMain = (ProgressBar) rootView.findViewById(R.id.pb_main);
+        pbMain = (ProgressBar) rootView.findViewById(R.id.pb_main);
 
-
-
-        /*
-        lvStops.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, StopsFragment.newInstance()).commit();
-            }
-        });
-        */
+        lvStops.setOnItemClickListener(itemClickListener);
 
         return rootView;
     }
