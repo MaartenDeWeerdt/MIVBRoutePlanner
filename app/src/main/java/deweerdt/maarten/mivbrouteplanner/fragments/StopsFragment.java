@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -17,17 +18,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import deweerdt.maarten.mivbrouteplanner.R;
+import deweerdt.maarten.mivbrouteplanner.entities.Stop;
+import deweerdt.maarten.mivbrouteplanner.model.StopDAO;
 import deweerdt.maarten.mivbrouteplanner.requests.RawDataRequest;
 import deweerdt.maarten.mivbrouteplanner.util.StopsAdapter;
 import deweerdt.maarten.mivbrouteplanner.util.StopsParser;
@@ -37,7 +43,9 @@ public class StopsFragment extends Fragment {
 
     private StopsAdapter mAdapter;
     private ListView lvStops;
-    private ProgressBar pbMain;
+
+
+    StopDAO stopdao = new StopDAO();
 
     public StopsFragment() {
 
@@ -63,23 +71,18 @@ public class StopsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_stops, container, false);
 
         lvStops = (ListView) rootView.findViewById(R.id.lv_stops);
-        pbMain = (ProgressBar) rootView.findViewById(R.id.pb_main);
-
+        stopdao.openConnection(getActivity());
+        mAdapter = new StopsAdapter(getActivity(), stopdao.getAllStops());
+        lvStops.setAdapter(mAdapter);
         lvStops.setOnItemClickListener(itemClickListener);
-
         return rootView;
     }
-
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getActivity(), "start download", Toast.LENGTH_SHORT).show();
-        downloadZIP();
-
-        pbMain = (ProgressBar) getActivity().findViewById(R.id.pb_main);
 
     }
 
@@ -99,89 +102,4 @@ public class StopsFragment extends Fragment {
 
     }
 
-    private Response.Listener<byte[]> responseGETListener = new Response.Listener<byte[]>() {
-        @Override
-        public void onResponse(byte[] response) {
-
-            //http://stackoverflow.com/questions/8367126/how-can-i-convert-byte-array-to-zip-file
-            //https://techstricks.com/download-file-using-android-volley/
-
-            try {
-                //set the path where we want to save the file
-                //in this case, going to save it on the cache directory of the project
-                File cacheDir = getActivity().getCacheDir();
-
-                ZipInputStream zipStream = new ZipInputStream(new ByteArrayInputStream(response));
-                ZipEntry entry;
-
-                while ((entry = zipStream.getNextEntry()) != null) {
-                    //gets filenames from zip -> party
-                    String entryName = entry.getName();
-
-                    File f = new File(cacheDir + File.pathSeparator + entryName);
-                    FileOutputStream out = new FileOutputStream(f);
-
-                    byte[] byteBuff = new byte[4096];
-                    int bytesRead = 0;
-                    while ((bytesRead = zipStream.read(byteBuff)) != -1)
-                    {
-                        out.write(byteBuff, 0, bytesRead);
-                    }
-                    out.close();
-
-                    zipStream.closeEntry();
-                }
-                zipStream.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            parseFiles();
-        }
-    };
-    private Response.ErrorListener responseGETErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            //TODO catch errors
-        }
-    };
-
-    private void downloadZIP() {
-
-        RequestQueue mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        //params voor header
-        HashMap<String, String> Headerparams = new HashMap<>();
-        Headerparams.put("Authorization:", "Bearer 99a1cb8b757e1d06ccee096252fde7b9");
-
-        //headers kan je niet setten, fast and dirty de klasse overschrijven
-        RawDataRequest getRequest = new RawDataRequest(Request.Method.GET,
-                "https://opendata-api.stib-mivb.be/Files/1.0/Gtfs",
-                responseGETListener,
-                responseGETErrorListener,
-                Headerparams
-        );
-        mQueue.add(getRequest);
-    }
-
-    private void parseFiles()
-    {
-        try {
-            StopsParser.getInstance()
-                    .parseStops(new FileInputStream(getActivity().getCacheDir()+File.pathSeparator+"stops.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Toast.makeText(getActivity().getApplicationContext(), "Finished loading data", Toast.LENGTH_LONG).show();
-
-        try {
-            mAdapter = new StopsAdapter(getActivity(), StopsParser.getInstance().parseStops(new FileInputStream(getActivity().getCacheDir()+ File.pathSeparator + "stops.txt")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        pbMain.setEnabled(false);
-        pbMain.setVisibility(View.INVISIBLE);
-        lvStops.setAdapter(mAdapter);
-    }
 }

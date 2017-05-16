@@ -9,13 +9,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import deweerdt.maarten.mivbrouteplanner.entities.Stop;
+import deweerdt.maarten.mivbrouteplanner.model.StopDAO;
 
 /**
  * Created by Maarten De Weerdt on 10/05/2017.
  */
 
 public class StopsParser {
+
     private static final StopsParser ourInstance = new StopsParser();
+    StopDAO stopDAO = new StopDAO();
 
     public static StopsParser getInstance() {
         return ourInstance;
@@ -34,7 +37,9 @@ public class StopsParser {
         try {
             while((line = rawReader.readLine()) != null) {
                 mStopsList.add(new Stop(line));
+
             }
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -42,8 +47,9 @@ public class StopsParser {
 
         //first row in file are columns
         mStopsList.remove(0);
-
+        stopDAO.insertStops(mStopsList);
         //printStops();
+
         return mStopsList;
     }
 

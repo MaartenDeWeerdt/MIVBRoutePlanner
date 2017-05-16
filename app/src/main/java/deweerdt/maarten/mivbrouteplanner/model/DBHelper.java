@@ -17,15 +17,15 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createStatement = "CREATE table " + DBStop.TABLE_STOPS + " ( "
-                + DBStop.STOP_ID + ", "
-                + DBStop.STOP_CODE + ", "
-                + DBStop.STOP_NAME + ", "
-                + DBStop.STOP_DESC + ", "
-                + DBStop.STOP_LAT + ", "
-                + DBStop.STOP_LON + ", "
-                + DBStop.ZONE_ID + ", "
-                + DBStop.STOP_URL + ", "
-                + DBStop.LOCATION_TYPE + ", "
+                + DBStop.STOP_ID + " text primary key , "
+                + DBStop.STOP_CODE + " text , "
+                + DBStop.STOP_NAME + " text , "
+                + DBStop.STOP_DESC + " text , "
+                + DBStop.STOP_LAT + " text , "
+                + DBStop.STOP_LON + " text , "
+                + DBStop.ZONE_ID + " text , "
+                + DBStop.STOP_URL + " text , "
+                + DBStop.LOCATION_TYPE + " text "
                 + ")";
 
         db.execSQL(createStatement);

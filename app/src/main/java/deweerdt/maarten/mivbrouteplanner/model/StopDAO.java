@@ -1,8 +1,10 @@
 package deweerdt.maarten.mivbrouteplanner.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,16 +27,17 @@ public class StopDAO {
         mDatabase = mDBHelper.getWritableDatabase();
     }
 
-    public ArrayList<Stop> getAlStops(){
+    public ArrayList<Stop> getAllStops(){
 
         ArrayList<Stop> stops = new ArrayList<>();
 
         //Cursor = resultset met verwijzing naar specifieke rij in resultatenset
-        Cursor mCursor = mDatabase.rawQuery("SELECT " + DBStop.STOP_ID + DBStop.STOP_CODE + " DISTINCT " + DBStop.STOP_NAME + DBStop.STOP_DESC +
-                DBStop.STOP_LAT + DBStop.STOP_LON + DBStop.ZONE_ID +DBStop.STOP_URL + DBStop.LOCATION_TYPE+" FROM " + DBStop.TABLE_STOPS, null);
+        String select = String.format("SELECT * FROM %s", DBStop.TABLE_STOPS);
+
+        Cursor mCursor = mDatabase.rawQuery(select, null);
         //zeker zijn dat we op de eerste rij starten
         mCursor.moveToFirst();
-
+        Log.i("Select", "rows "+mCursor.getCount());
         //alle rijen overlopen
         //loopen zolang de laatste rij nog niet is verwerkt
         while (!mCursor.isAfterLast()){
@@ -75,5 +78,30 @@ public class StopDAO {
             mCursor.moveToNext();
         }
         return stops;
+    }
+
+    public boolean insertStops(ArrayList<Stop> stops){
+
+        if(mDatabase == null)
+            return false;
+
+        for (Stop newstop: stops ) {
+            ContentValues mValues = new ContentValues();
+
+            mValues.put(DBStop.STOP_ID, newstop.getStop_id());
+            mValues.put(DBStop.STOP_CODE, newstop.getStop_code());
+            mValues.put(DBStop.STOP_NAME, newstop.getStop_name());
+            mValues.put(DBStop.STOP_DESC, newstop.getStop_desc());
+            mValues.put(DBStop.STOP_LON, newstop.getStop_lon());
+            mValues.put(DBStop.STOP_LAT, newstop.getStop_lat());
+            mValues.put(DBStop.ZONE_ID, newstop.getZone_id());
+            mValues.put(DBStop.STOP_URL, newstop.getStop_url());
+            mValues.put(DBStop.LOCATION_TYPE, newstop.getLocation_type());
+
+           long id = mDatabase.insert(DBStop.TABLE_STOPS, null, mValues);
+            Log.i("insert", "inserted row "+ id);
+        }
+
+        return true;
     }
 }
