@@ -82,8 +82,6 @@ public class StopsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -99,7 +97,6 @@ public class StopsFragment extends Fragment {
             for (File file : files)
                 file.delete();
         }
-
     }
 
 }

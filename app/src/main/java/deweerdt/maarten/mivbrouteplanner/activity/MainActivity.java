@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
         //params voor header
         HashMap<String, String> Headerparams = new HashMap<>();
-        Headerparams.put("Authorization:", "Bearer 99a1cb8b757e1d06ccee096252fde7b9");
+        Headerparams.put("Authorization:", "Bearer c062c8ad1c7b6ae5f5c325ce9cc3634d");
 
         //headers kan je niet setten, fast and dirty de klasse overschrijven
         RawDataRequest getRequest = new RawDataRequest(Request.Method.GET,
