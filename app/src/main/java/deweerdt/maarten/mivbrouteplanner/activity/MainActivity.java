@@ -2,7 +2,6 @@ package deweerdt.maarten.mivbrouteplanner.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,7 +28,6 @@ import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 import deweerdt.maarten.mivbrouteplanner.fragments.StopsFragment;
 import deweerdt.maarten.mivbrouteplanner.model.StopDAO;
 import deweerdt.maarten.mivbrouteplanner.requests.RawDataRequest;
-import deweerdt.maarten.mivbrouteplanner.util.StopsAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
         //params voor header
         HashMap<String, String> Headerparams = new HashMap<>();
-        Headerparams.put("Authorization:", "Bearer 99a1cb8b757e1d06ccee096252fde7b9");
+        Headerparams.put("Authorization:", "Bearer c062c8ad1c7b6ae5f5c325ce9cc3634d");
 
         //headers kan je niet setten, fast and dirty de klasse overschrijven
         RawDataRequest getRequest = new RawDataRequest(Request.Method.GET,
