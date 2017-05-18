@@ -1,7 +1,8 @@
 package deweerdt.maarten.mivbrouteplanner.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -36,14 +37,19 @@ public class MainActivity extends AppCompatActivity {
     private StopDAO stopdao = new StopDAO();
     private ProgressBar pbMain;
     private ArrayList<Stop> mStopsList = new ArrayList<Stop>();
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean isFirstTime = prefs.getBoolean("first", true);
+
         Toast.makeText(this, "start download", Toast.LENGTH_SHORT).show();
-        downloadZIP();
+        if(isFirstTime)
+             downloadZIP();
 
         pbMain = (ProgressBar) findViewById(R.id.pb_main);
 
@@ -55,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
             //http://stackoverflow.com/questions/8367126/how-can-i-convert-byte-array-to-zip-file
             //https://techstricks.com/download-file-using-android-volley/
+
 
             try {
                 //set the path where we want to save the file
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            parseFiles();
+           parseFiles();
         }
     };
     private Response.ErrorListener responseGETErrorListener = new Response.ErrorListener() {
@@ -123,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                 mStopsList.add(new Stop(line));
             }
 
-
             //first row in file are columns
             mStopsList.remove(0);
             stopdao.insertStops(mStopsList);
@@ -139,5 +145,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
 
+        prefs.edit().putBoolean("first", false).apply();
     }
 }

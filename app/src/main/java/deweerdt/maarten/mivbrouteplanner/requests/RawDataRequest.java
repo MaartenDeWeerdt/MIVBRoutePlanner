@@ -40,7 +40,7 @@ public class RawDataRequest extends Request<byte[]>{
 
     @Override
     protected void deliverResponse(byte[] response) {
-        mListener.onResponse(response);
+         mListener.onResponse(response);
     }
 
     @Override
