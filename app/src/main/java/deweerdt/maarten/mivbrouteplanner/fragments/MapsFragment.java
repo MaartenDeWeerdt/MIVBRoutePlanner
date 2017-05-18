@@ -23,9 +23,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import deweerdt.maarten.mivbrouteplanner.R;
+import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -37,11 +40,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
 
+    Stop selectedStop;
+
     public MapsFragment() {
     }
 
-    public static MapsFragment newInstance() {
+    public static MapsFragment newInstance(Stop s) {
         MapsFragment fragment = new MapsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("stop", s);
+        fragment.setArguments(args);
+
+        //selectedStop = new Stop(s);
         return fragment;
     }
 
@@ -53,6 +63,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
         mvMap = (MapView) rootView.findViewById(R.id.mv_map);
         mvMap.onCreate(savedInstanceState);
         mvMap.getMapAsync(this);
+
+        selectedStop = (Stop) getArguments().getSerializable("stop");
 
         return rootView;
     }
@@ -67,6 +79,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+
+        double selectedLat = Double.parseDouble(selectedStop.getStop_lat());
+        double selectedLng = Double.parseDouble(selectedStop.getStop_lon());
+
+        mGoogleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(selectedLat, selectedLng))
+                .title(selectedStop.getStop_name()));
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission

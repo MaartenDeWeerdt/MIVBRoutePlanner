@@ -1,10 +1,12 @@
 package deweerdt.maarten.mivbrouteplanner.entities;
 
+import java.io.Serializable;
+
 /**
  * Created by Maarten De Weerdt on 10/05/2017.
  */
 
-public class Stop {
+public class Stop implements Serializable {
     public String stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type;
 
     public Stop(String str) {

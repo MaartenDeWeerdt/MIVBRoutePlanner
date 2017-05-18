@@ -1,5 +1,6 @@
 package deweerdt.maarten.mivbrouteplanner.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -60,7 +61,8 @@ public class StopsFragment extends Fragment {
     ListView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new MapsFragment()).commit();
+
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, MapsFragment.newInstance((Stop) mAdapter.getItem(position))).commit();
         }
     };
 

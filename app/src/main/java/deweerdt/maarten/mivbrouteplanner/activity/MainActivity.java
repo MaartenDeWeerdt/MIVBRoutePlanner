@@ -1,6 +1,7 @@
 package deweerdt.maarten.mivbrouteplanner.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private StopDAO stopdao = new StopDAO();
     private ProgressBar pbMain;
+    private ArrayList<Stop> mStopsList = new ArrayList<Stop>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     private void parseFiles() {
         stopdao.openConnection(this);
         try {
-            ArrayList<Stop> mStopsList = new ArrayList<Stop>();
+
             BufferedReader rawReader = new BufferedReader(new InputStreamReader(new FileInputStream(getCacheDir() + File.pathSeparator + "stops.txt")));
             String line = "";
 
@@ -138,5 +140,4 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
 
     }
-
 }
