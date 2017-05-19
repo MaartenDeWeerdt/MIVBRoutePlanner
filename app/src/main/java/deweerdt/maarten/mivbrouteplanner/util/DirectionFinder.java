@@ -1,5 +1,8 @@
 package deweerdt.maarten.mivbrouteplanner.util;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -18,6 +21,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import deweerdt.maarten.mivbrouteplanner.activity.MainActivity;
+import deweerdt.maarten.mivbrouteplanner.fragments.MapsFragment;
 
 /**
  * Created by Mai Thanh Hiep on 4/3/2016.
@@ -26,10 +33,11 @@ public class DirectionFinder {
     private static final String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";
     private static final String GOOGLE_API_KEY = "AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI";
     private DirectionFinderListener listener;
-    private LatLng origin;
-    private LatLng destination;
+    private String origin;
+    private String destination;
+    private DirectionFinder directionFinder;
 
-    public DirectionFinder(DirectionFinderListener listener, LatLng origin, LatLng destination) {
+    public DirectionFinder(DirectionFinderListener listener, String origin, String destination) {
         this.listener = listener;
         this.origin = origin;
         this.destination = destination;
@@ -41,6 +49,8 @@ public class DirectionFinder {
     }
 
     private String createUrl() throws UnsupportedEncodingException {
+
+
         String urlOrigin = URLEncoder.encode(String.valueOf(origin), "utf-8");
         String urlDestination = URLEncoder.encode(String.valueOf(destination), "utf-8");
 

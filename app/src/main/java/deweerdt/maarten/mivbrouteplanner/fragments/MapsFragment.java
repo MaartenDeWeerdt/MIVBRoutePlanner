@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,10 +141,35 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     }
 
     private void sendRequest(){
-        LatLng origin = new LatLng(41, 20);
-        LatLng destination = new LatLng(selectedLat, selectedLong);
+        Geocoder geocoder = new Geocoder(getActivity());
+        List huidigeLocatie = null;
+        List destination = null;
+        String startpunt = null;
+        String eindpunt = null;
+
         try {
-            new DirectionFinder(this, origin, destination).execute();
+            huidigeLocatie = geocoder.getFromLocation(mGoogleMap.getMyLocation().getLatitude(), mGoogleMap.getMyLocation().getLongitude(), 1);
+            if (huidigeLocatie != null && huidigeLocatie.size() > 0) {
+                Address address = (Address) huidigeLocatie.get(0);
+                // sending back first address line and locality
+                startpunt = address.getAddressLine(0) + ", " + address.getLocality();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            destination = geocoder.getFromLocation(selectedLat, selectedLong, 1);
+            if (destination != null && destination.size() > 0) {
+                Address address = (Address) destination.get(0);
+                // sending back first address line and locality
+                eindpunt = address.getAddressLine(0) + ", " + address.getLocality();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            new DirectionFinder(this, startpunt, eindpunt).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -167,7 +195,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
 
                 originMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
                         .title("huidige locatie")
-                        .position(new LatLng(10, 10))));
+                        .position(new LatLng(mGoogleMap.getMyLocation().getLatitude(), mGoogleMap.getMyLocation().getLongitude()))));
                 destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
                         .title(selectedStop.getStop_name())
                         .position(new LatLng(selectedLat, selectedLong))));
