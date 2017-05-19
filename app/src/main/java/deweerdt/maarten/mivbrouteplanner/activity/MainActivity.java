@@ -50,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "start download", Toast.LENGTH_SHORT).show();
         if(isFirstTime)
              downloadZIP();
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
 
-        pbMain = (ProgressBar) findViewById(R.id.pb_main);
 
     }
 

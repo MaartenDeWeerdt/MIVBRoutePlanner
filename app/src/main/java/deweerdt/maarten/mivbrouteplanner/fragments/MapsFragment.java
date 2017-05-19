@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -33,9 +34,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import deweerdt.maarten.mivbrouteplanner.R;
@@ -44,14 +47,20 @@ import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 import deweerdt.maarten.mivbrouteplanner.util.DirectionFinder;
 import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
 
-//public class MapsFragment extends Fragment implements OnMapReadyCallback, DirectionFinderListener{
-    public class MapsFragment extends Fragment implements OnMapReadyCallback{
+public class MapsFragment extends Fragment implements OnMapReadyCallback, DirectionFinderListener{
+
+    
 
     private GoogleMap mGoogleMap;
     private MapView mvMap;
     private Button btnRoute;
     private double selectedLat, selectedLong;
     private ProgressDialog progressDialog;
+
+    private List<Marker> originMarkers = new ArrayList<>();
+    private List<Marker> destinationMarkers = new ArrayList<>();
+    private List<Polyline> polylinePaths = new ArrayList<>();
+
 
 
     Stop selectedStop;
@@ -81,13 +90,19 @@ import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
         btnRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sendRequest();
+                sendRequest();
             }
         });
 
         selectedStop = (Stop) getArguments().getSerializable("stop");
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mvMap.onResume();
     }
 
     @Override
@@ -102,12 +117,12 @@ import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
                 .position(new LatLng(selectedLat, selectedLong))
                 .title(selectedStop.getStop_name()));
 
-        /*
+
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(selectedLat, selectedLong)).zoom(12).build();
         mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-*/
 
-        /*
+
+
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -119,13 +134,11 @@ import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-*/
+
     }
 
-    /*
-
     private void sendRequest(){
-        LatLng origin = new LatLng(mGoogleMap.getMyLocation().getLatitude(), mGoogleMap.getMyLocation().getLongitude());
+        LatLng origin = new LatLng(41, 20);
         LatLng destination = new LatLng(selectedLat, selectedLong);
         try {
             new DirectionFinder(this, origin, destination).execute();
@@ -142,21 +155,33 @@ import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
     }
 
     @Override
-    public void onDirectionFinderSuccess(List<Route> routes) {
-        progressDialog.dismiss();
+    public void onDirectionFinderSuccess(List<deweerdt.maarten.mivbrouteplanner.util.Route> routes) {
 
-        for (Route route : routes) {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            progressDialog.dismiss();
+            polylinePaths = new ArrayList<>();
+            originMarkers = new ArrayList<>();
+            destinationMarkers = new ArrayList<>();
 
-            PolylineOptions polylineOptions = new PolylineOptions().
-                    geodesic(true).
-                    color(Color.BLUE).
-                    width(10);
+            for (deweerdt.maarten.mivbrouteplanner.util.Route newRoute : routes) {
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newRoute.startLocation, 16));
 
-            for (int i = 0; i < route.points.size(); i++)
-                polylineOptions.add(route.points.get(i));
+                originMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
+                        .title("huidige locatie")
+                        .position(new LatLng(10, 10))));
+                destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
+                        .title(selectedStop.getStop_name())
+                        .position(new LatLng(selectedLat, selectedLong))));
 
+                PolylineOptions polylineOptions = new PolylineOptions().
+                        geodesic(true).
+                        color(Color.BLUE).
+                        width(10);
+
+                for (int i = 0; i < newRoute.points.size(); i++)
+                    polylineOptions.add(newRoute.points.get(i));
+
+                polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
+            }
         }
+
     }
-*/
-}
