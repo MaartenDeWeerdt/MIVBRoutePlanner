@@ -38,9 +38,8 @@ import deweerdt.maarten.mivbrouteplanner.entities.Stop;
 import deweerdt.maarten.mivbrouteplanner.util.DirectionFinder;
 import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, DirectionFinderListener{
+public class MapsFragment extends Fragment implements OnMapReadyCallback, DirectionFinderListener {
 
-    
 
     private GoogleMap mGoogleMap;
     private MapView mvMap;
@@ -55,7 +54,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
-
 
 
     Stop selectedStop;
@@ -127,9 +125,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d("UPDATE", "check permission granted");
-        switch (requestCode){
+        switch (requestCode) {
             case LOCATIEPERMISSIE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     gotLocationPermission = true;
                     updateMap();
                     Log.d("UPDATE", "Hoera");
@@ -137,7 +135,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
         }
     }
 
-    private void sendRequest(){
+    private void sendRequest() {
         Geocoder geocoder = new Geocoder(getActivity());
         List huidigeLocatie = null;
         List destination = null;
@@ -182,53 +180,52 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     @Override
     public void onDirectionFinderSuccess(List<deweerdt.maarten.mivbrouteplanner.util.Route> routes) {
 
-            progressDialog.dismiss();
-            polylinePaths = new ArrayList<>();
-            originMarkers = new ArrayList<>();
-            destinationMarkers = new ArrayList<>();
+        progressDialog.dismiss();
+        polylinePaths = new ArrayList<>();
+        originMarkers = new ArrayList<>();
+        destinationMarkers = new ArrayList<>();
 
-            for (deweerdt.maarten.mivbrouteplanner.util.Route newRoute : routes) {
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newRoute.startLocation, 16));
+        for (deweerdt.maarten.mivbrouteplanner.util.Route newRoute : routes) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newRoute.startLocation, 16));
 
-                originMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
-                        .title("huidige locatie")
-                        .position(new LatLng(mGoogleMap.getMyLocation().getLatitude(), mGoogleMap.getMyLocation().getLongitude()))));
-                destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
-                        .title(selectedStop.getStop_name())
-                        .position(new LatLng(selectedLat, selectedLong))));
+            originMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
+                    .title("huidige locatie")
+                    .position(new LatLng(mGoogleMap.getMyLocation().getLatitude(), mGoogleMap.getMyLocation().getLongitude()))));
+            destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
+                    .title(selectedStop.getStop_name())
+                    .position(new LatLng(selectedLat, selectedLong))));
 
-                PolylineOptions polylineOptions = new PolylineOptions().
-                        geodesic(true).
-                        color(Color.BLUE).
-                        width(10);
+            PolylineOptions polylineOptions = new PolylineOptions().
+                    geodesic(true).
+                    color(Color.BLUE).
+                    width(10);
 
-                for (int i = 0; i < newRoute.points.size(); i++)
-                    polylineOptions.add(newRoute.points.get(i));
+            for (int i = 0; i < newRoute.points.size(); i++)
+                polylineOptions.add(newRoute.points.get(i));
 
-                polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
-                tvTijd.setText(newRoute.duration.toString());
-                tvAfstand.setText(newRoute.distance.toString());
-            }
+            polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
+            tvTijd.setText(newRoute.duration.toString());
+            tvAfstand.setText(newRoute.distance.toString());
         }
-
-        public void updateMap(){
-
-            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATIEPERMISSIE);
-            }
-            else
-            {
-                gotLocationPermission = true;
-            }
-
-            if (gotLocationPermission)
-            {
-                mGoogleMap.setMyLocationEnabled(true);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-            }else{
-                mGoogleMap.setMyLocationEnabled(false);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-            }
-        }
-
     }
+
+    public void updateMap() {
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            gotLocationPermission = true;
+        } else {
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATIEPERMISSIE);
+        }
+
+        if (gotLocationPermission) {
+            mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        } else {
+            mGoogleMap.setMyLocationEnabled(false);
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        }
+    }
+
+}
