@@ -7,8 +7,10 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -50,6 +50,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     private double selectedLat, selectedLong;
     private ProgressDialog progressDialog;
 
+    final int LOCATIEPERMISSIE = 100;
+
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
@@ -57,6 +59,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
 
 
     Stop selectedStop;
+    private boolean gotLocationPermission = false;
 
     public MapsFragment() {
     }
@@ -118,20 +121,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(selectedLat, selectedLong)).zoom(12).build();
         mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+        updateMap();
+    }
 
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d("UPDATE", "check permission granted");
+        switch (requestCode){
+            case LOCATIEPERMISSIE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    gotLocationPermission = true;
+                    updateMap();
+                    Log.d("UPDATE", "Hoera");
+                }
         }
-        mGoogleMap.setMyLocationEnabled(true);
-
     }
 
     private void sendRequest(){
@@ -205,6 +208,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
                 polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
                 tvTijd.setText(newRoute.duration.toString());
                 tvAfstand.setText(newRoute.distance.toString());
+            }
+        }
+
+        public void updateMap(){
+
+            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATIEPERMISSIE);
+            }
+            else
+            {
+                gotLocationPermission = true;
+            }
+
+            if (gotLocationPermission)
+            {
+                mGoogleMap.setMyLocationEnabled(true);
+                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            }else{
+                mGoogleMap.setMyLocationEnabled(false);
+                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
             }
         }
 
