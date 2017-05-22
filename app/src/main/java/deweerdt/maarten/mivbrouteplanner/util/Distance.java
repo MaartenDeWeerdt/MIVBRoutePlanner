@@ -11,4 +11,9 @@ public class Distance {
         this.text = text;
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Afstand: " + text;
+    }
 }

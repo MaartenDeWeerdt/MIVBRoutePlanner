@@ -11,4 +11,9 @@ public class Duration {
         this.text = text;
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Tijd: " + text;
+    }
 }

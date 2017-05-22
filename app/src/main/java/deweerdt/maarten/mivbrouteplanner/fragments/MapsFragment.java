@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +25,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -42,6 +45,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     private GoogleMap mGoogleMap;
     private MapView mvMap;
     private Button btnRoute;
+    private TextView tvAfstand;
+    private TextView tvTijd;
     private double selectedLat, selectedLong;
     private ProgressDialog progressDialog;
 
@@ -74,6 +79,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
         mvMap.getMapAsync(this);
 
         btnRoute = (Button) rootView.findViewById(R.id.btn_route);
+        tvAfstand = (TextView) rootView.findViewById(R.id.tv_afstand);
+        tvTijd = (TextView) rootView.findViewById(R.id.tv_tijd);
 
         btnRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +103,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
 
 
         selectedLat = Double.parseDouble(selectedStop.getStop_lat());
@@ -194,6 +203,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
                     polylineOptions.add(newRoute.points.get(i));
 
                 polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
+                tvTijd.setText(newRoute.duration.toString());
+                tvAfstand.setText(newRoute.distance.toString());
             }
         }
 

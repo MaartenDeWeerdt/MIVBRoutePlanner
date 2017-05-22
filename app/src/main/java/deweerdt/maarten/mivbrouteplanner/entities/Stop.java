@@ -62,4 +62,9 @@ public class Stop implements Serializable {
     public String getLocation_type() {
         return location_type;
     }
+
+    @Override
+    public String toString() {
+        return stop_name;
+    }
 }

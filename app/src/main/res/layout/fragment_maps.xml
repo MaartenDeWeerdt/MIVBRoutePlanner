@@ -15,11 +15,33 @@
         android:id="@+id/btn_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:text="route"
+        android:layout_above="@+id/tv_afstand"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="22dp"
+        android:layout_marginEnd="22dp" />
+
+    <TextView
+        android:id="@+id/tv_afstand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_tijd"
+        android:layout_alignEnd="@+id/btn_route"
+        android:layout_alignRight="@+id/btn_route"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="textEnd"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <TextView
+        android:id="@+id/tv_tijd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tv_afstand"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="56dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
-        android:text="route" />
+        android:layout_alignRight="@+id/tv_afstand"
+        android:layout_marginBottom="11dp"
+        android:textAlignment="textEnd"
+        android:textAppearance="@android:style/TextAppearance.Large" />
 </RelativeLayout>
