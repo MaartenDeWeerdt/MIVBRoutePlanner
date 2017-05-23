@@ -37,7 +37,6 @@ public class StopsParser {
         try {
             while((line = rawReader.readLine()) != null) {
                 mStopsList.add(new Stop(line));
-
             }
 
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package deweerdt.maarten.mivbrouteplanner.fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -82,6 +83,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
         btnRoute = (Button) rootView.findViewById(R.id.btn_route);
         tvAfstand = (TextView) rootView.findViewById(R.id.tv_afstand);
         tvTijd = (TextView) rootView.findViewById(R.id.tv_tijd);
+
+        btnRoute.setEnabled(false);
 
         btnRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,10 +225,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
         if (gotLocationPermission) {
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            btnRoute.setEnabled(true);
+
         } else {
             mGoogleMap.setMyLocationEnabled(false);
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
+
+
 
 }

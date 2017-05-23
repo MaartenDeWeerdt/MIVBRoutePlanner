@@ -32,7 +32,7 @@ public class StopDAO {
         ArrayList<Stop> stops = new ArrayList<>();
 
         //Cursor = resultset met verwijzing naar specifieke rij in resultatenset
-        String select = String.format("SELECT * FROM %s", DBStop.TABLE_STOPS);
+        String select = String.format("SELECT * FROM %s GROUP BY %s", DBStop.TABLE_STOPS, DBStop.STOP_NAME);
 
         Cursor mCursor = mDatabase.rawQuery(select, null);
         //zeker zijn dat we op de eerste rij starten

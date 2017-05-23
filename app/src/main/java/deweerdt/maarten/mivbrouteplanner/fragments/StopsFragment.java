@@ -42,6 +42,7 @@ public class StopsFragment extends Fragment {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, MapsFragment.newInstance((Stop) mAdapter.getItem(position)))
+                    .addToBackStack(mAdapter.getItem(position).toString())
                     .commit();
         }
     };

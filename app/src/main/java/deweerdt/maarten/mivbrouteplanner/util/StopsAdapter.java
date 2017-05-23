@@ -74,7 +74,7 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
 
         Stop stop = stops.get(position);
 
-        holder.tvRowStops.setText(stop.getStop_name());
+        holder.tvRowStops.setText(stop.getStop_name().replace("\"", ""));
 
         return convertView;
     }
