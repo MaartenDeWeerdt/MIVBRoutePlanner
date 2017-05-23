@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -47,11 +48,18 @@ public class MainActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean isFirstTime = prefs.getBoolean("first", true);
 
-        Toast.makeText(this, "start download", Toast.LENGTH_SHORT).show();
-        if(isFirstTime)
-             downloadZIP();
-        else
+        pbMain = (ProgressBar) findViewById(R.id.pb_main);
+
+
+        if(isFirstTime) {
+            downloadZIP();
+            Toast.makeText(this, "start download", Toast.LENGTH_SHORT).show();
+        }
+        else {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
+            pbMain.setEnabled(false);
+            pbMain.setVisibility(View.INVISIBLE);
+        }
 
 
     }
@@ -141,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Finished loading data", Toast.LENGTH_LONG).show();
 
-        //pbMain.setEnabled(false);
-        //pbMain.setVisibility(View.INVISIBLE);
+        pbMain.setEnabled(false);
+        pbMain.setVisibility(View.INVISIBLE);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
 
