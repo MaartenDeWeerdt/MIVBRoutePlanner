@@ -18,24 +18,23 @@ import deweerdt.maarten.mivbrouteplanner.model.StopDAO;
 public class StopsParser {
 
     private static final StopsParser ourInstance = new StopsParser();
+    private final String TAG = "GtfsDemo";
     StopDAO stopDAO = new StopDAO();
+    //needed stuff
+    private ArrayList<Stop> mStopsList = new ArrayList<Stop>();
+
+    private StopsParser() {
+    }
 
     public static StopsParser getInstance() {
         return ourInstance;
     }
 
-    private StopsParser() {
-    }
-
-    //needed stuff
-    private ArrayList<Stop> mStopsList = new ArrayList<Stop> ();
-    private final String TAG = "GtfsDemo";
-
     public ArrayList<Stop> parseStops(FileInputStream rid) {
         BufferedReader rawReader = new BufferedReader(new InputStreamReader(rid));
         String line = "";
         try {
-            while((line = rawReader.readLine()) != null) {
+            while ((line = rawReader.readLine()) != null) {
                 mStopsList.add(new Stop(line));
             }
 

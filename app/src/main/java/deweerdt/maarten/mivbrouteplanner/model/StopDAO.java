@@ -22,12 +22,12 @@ public class StopDAO {
     private DBHelper mDBHelper;
     private SQLiteDatabase mDatabase;
 
-    public void openConnection (Context context){
+    public void openConnection(Context context) {
         mDBHelper = new DBHelper(context);
         mDatabase = mDBHelper.getWritableDatabase();
     }
 
-    public ArrayList<Stop> getAllStops(){
+    public ArrayList<Stop> getAllStops() {
 
         ArrayList<Stop> stops = new ArrayList<>();
 
@@ -37,10 +37,10 @@ public class StopDAO {
         Cursor mCursor = mDatabase.rawQuery(select, null);
         //zeker zijn dat we op de eerste rij starten
         mCursor.moveToFirst();
-        Log.i("Select", "rows "+mCursor.getCount());
+        Log.i("Select", "rows " + mCursor.getCount());
         //alle rijen overlopen
         //loopen zolang de laatste rij nog niet is verwerkt
-        while (!mCursor.isAfterLast()){
+        while (!mCursor.isAfterLast()) {
 
             //comment maken van huidige rij
             Stop temp = new Stop();
@@ -80,12 +80,12 @@ public class StopDAO {
         return stops;
     }
 
-    public boolean insertStops(ArrayList<Stop> stops){
+    public boolean insertStops(ArrayList<Stop> stops) {
 
-        if(mDatabase == null)
+        if (mDatabase == null)
             return false;
 
-        for (Stop newstop: stops ) {
+        for (Stop newstop : stops) {
             ContentValues mValues = new ContentValues();
 
             mValues.put(DBStop.STOP_ID, newstop.getStop_id());
@@ -98,8 +98,8 @@ public class StopDAO {
             mValues.put(DBStop.STOP_URL, newstop.getStop_url());
             mValues.put(DBStop.LOCATION_TYPE, newstop.getLocation_type());
 
-           long id = mDatabase.insert(DBStop.TABLE_STOPS, null, mValues);
-            Log.i("insert", "inserted row "+ id);
+            long id = mDatabase.insert(DBStop.TABLE_STOPS, null, mValues);
+            Log.i("insert", "inserted row " + id);
         }
 
         return true;

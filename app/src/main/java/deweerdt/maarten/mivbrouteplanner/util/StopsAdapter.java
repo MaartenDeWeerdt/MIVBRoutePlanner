@@ -1,8 +1,6 @@
 package deweerdt.maarten.mivbrouteplanner.util;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,30 +9,21 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import deweerdt.maarten.mivbrouteplanner.R;
 import deweerdt.maarten.mivbrouteplanner.entities.Stop;
-import deweerdt.maarten.mivbrouteplanner.fragments.StopsFragment;
 
 /**
  * Created by Maarten De Weerdt on 10/05/2017.
  */
 
-public class StopsAdapter extends BaseAdapter implements Filterable{
-
-    private class Viewholder
-    {
-        public TextView tvRowStops;
-    }
+public class StopsAdapter extends BaseAdapter implements Filterable {
 
     private Viewholder holder;
-
-    private ArrayList <Stop> stops;
-
+    private ArrayList<Stop> stops;
     private Activity context;
 
-    public StopsAdapter (Activity context, ArrayList<Stop> stops){
+    public StopsAdapter(Activity context, ArrayList<Stop> stops) {
         this.context = context;
         this.stops = stops;
     }
@@ -55,9 +44,8 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
-        if(convertView == null ){
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
 
             convertView = context.getLayoutInflater().inflate(R.layout.stops_row, parent, false);
 
@@ -67,8 +55,7 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
 
 
             convertView.setTag(holder);
-        }
-        else{
+        } else {
             holder = (Viewholder) convertView.getTag();
         }
 
@@ -82,5 +69,9 @@ public class StopsAdapter extends BaseAdapter implements Filterable{
     @Override
     public Filter getFilter() {
         return null;
+    }
+
+    private class Viewholder {
+        public TextView tvRowStops;
     }
 }

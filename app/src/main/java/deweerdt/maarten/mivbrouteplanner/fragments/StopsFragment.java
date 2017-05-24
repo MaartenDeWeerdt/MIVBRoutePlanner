@@ -19,22 +19,8 @@ import deweerdt.maarten.mivbrouteplanner.util.StopsAdapter;
 
 public class StopsFragment extends Fragment {
 
-    private StopsAdapter mAdapter;
-    private ListView lvStops;
-
-
     StopDAO stopdao = new StopDAO();
-
-    public StopsFragment() {
-
-    }
-
-    public static StopsFragment newInstance() {
-        StopsFragment fragment = new StopsFragment();
-
-        return fragment;
-    }
-
+    private StopsAdapter mAdapter;
     ListView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -46,6 +32,17 @@ public class StopsFragment extends Fragment {
                     .commit();
         }
     };
+    private ListView lvStops;
+
+    public StopsFragment() {
+
+    }
+
+    public static StopsFragment newInstance() {
+        StopsFragment fragment = new StopsFragment();
+
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

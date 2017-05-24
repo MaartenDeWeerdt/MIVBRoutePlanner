@@ -14,13 +14,13 @@ import java.util.Map;
  */
 
 //http://stackoverflow.com/questions/17049473/how-to-set-custom-header-in-volley-request
-public class RawDataRequest extends Request<byte[]>{
+public class RawDataRequest extends Request<byte[]> {
 
     private final Response.Listener<byte[]> mListener;
+    //create a static map for directly accessing headers
+    public Map<String, String> responseHeaders;
     //request headerParams
     private Map<String, String> headerParams;
-    //create a static map for directly accessing headers
-    public Map<String, String> responseHeaders ;
 
     public RawDataRequest(int post, String mUrl, Response.Listener<byte[]> listener,
                           Response.ErrorListener errorListener, HashMap<String, String> params) {
@@ -35,12 +35,14 @@ public class RawDataRequest extends Request<byte[]>{
     protected Map<String, String> getParams()
             throws AuthFailureError {
         return headerParams;
-    };
+    }
+
+    ;
 
 
     @Override
     protected void deliverResponse(byte[] response) {
-         mListener.onResponse(response);
+        mListener.onResponse(response);
     }
 
     @Override

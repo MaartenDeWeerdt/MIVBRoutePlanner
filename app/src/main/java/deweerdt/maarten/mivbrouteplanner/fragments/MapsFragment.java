@@ -2,7 +2,6 @@ package deweerdt.maarten.mivbrouteplanner.fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -42,6 +41,8 @@ import deweerdt.maarten.mivbrouteplanner.util.DirectionFinderListener;
 public class MapsFragment extends Fragment implements OnMapReadyCallback, DirectionFinderListener {
 
 
+    final int LOCATIEPERMISSIE = 100;
+    Stop selectedStop;
     private GoogleMap mGoogleMap;
     private MapView mvMap;
     private Button btnRoute;
@@ -49,15 +50,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
     private TextView tvTijd;
     private double selectedLat, selectedLong;
     private ProgressDialog progressDialog;
-
-    final int LOCATIEPERMISSIE = 100;
-
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
-
-
-    Stop selectedStop;
     private boolean gotLocationPermission = false;
 
     public MapsFragment() {
@@ -232,7 +227,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Direct
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
-
 
 
 }

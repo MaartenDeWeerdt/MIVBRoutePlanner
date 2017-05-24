@@ -35,35 +35,10 @@ import deweerdt.maarten.mivbrouteplanner.requests.RawDataRequest;
 public class MainActivity extends AppCompatActivity {
 
 
+    SharedPreferences prefs;
     private StopDAO stopdao = new StopDAO();
     private ProgressBar pbMain;
     private ArrayList<Stop> mStopsList = new ArrayList<Stop>();
-    SharedPreferences prefs;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean isFirstTime = prefs.getBoolean("first", true);
-
-        pbMain = (ProgressBar) findViewById(R.id.pb_main);
-
-
-        if(isFirstTime) {
-            downloadZIP();
-            Toast.makeText(this, "start download", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
-            pbMain.setEnabled(false);
-            pbMain.setVisibility(View.INVISIBLE);
-        }
-
-
-    }
-
     private Response.Listener<byte[]> responseGETListener = new Response.Listener<byte[]>() {
         @Override
         public void onResponse(byte[] response) {
@@ -101,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-           parseFiles();
+            parseFiles();
         }
     };
     private Response.ErrorListener responseGETErrorListener = new Response.ErrorListener() {
@@ -110,6 +85,29 @@ public class MainActivity extends AppCompatActivity {
             //TODO catch errors
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.content_main);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean isFirstTime = prefs.getBoolean("first", true);
+
+        pbMain = (ProgressBar) findViewById(R.id.pb_main);
+
+
+        if (isFirstTime) {
+            downloadZIP();
+            Toast.makeText(this, "start download", Toast.LENGTH_SHORT).show();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new StopsFragment()).commit();
+            pbMain.setEnabled(false);
+            pbMain.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
 
     private void downloadZIP() {
 
